@@ -30,7 +30,7 @@ public class BoundsController : MonoBehaviour {
 		ymax = Instantiate(boundsplane, new Vector2 (0, cameraRect.yMax),Quaternion.identity) as GameObject;
 		//bottom side bound plane
 		ymin = Instantiate(boundsplane, new Vector2 (0, cameraRect.yMin),Quaternion.identity) as GameObject;
-
+		ymin.tag = "water";
 		/*
 		//right side bound plane
 		xmax = Instantiate(boundsplane, new Vector2 (cameraRect.xMax, (cameraRect.yMax + cameraRect.yMin)/2),Quaternion.identity) as GameObject;

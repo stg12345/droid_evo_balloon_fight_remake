@@ -10,6 +10,8 @@ public class ControllerScript : MonoBehaviour {
 	int rotationval;
 	public int android_jumpval;
 	public int android_strafeval;
+	public Rect windowrect;
+	public GameObject gameoverpopup;
 	// Use this for initialization
 	void Start () {
 		bottomLeft = camera.ScreenToWorldPoint(Vector2.zero);
@@ -24,6 +26,7 @@ public class ControllerScript : MonoBehaviour {
 		//Set jump acceleration value
 		android_jumpval = 40;
 		android_strafeval = 10;
+
 	}
 
 	void Update()
@@ -84,6 +87,14 @@ public class ControllerScript : MonoBehaviour {
 		if(GUI.Button(new Rect(500,(Screen.height - (Screen.height * 0.2f)),200,80),"Right"))
 		{
 			this.rigidbody2D.AddForce(new Vector2(1,0) * android_strafeval);
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.tag == "water")
+		{
+			Application.LoadLevel("GameOverMenuScene");
 		}
 	}
 }
