@@ -7,7 +7,7 @@ public class Creep_Body_Script : MonoBehaviour {
 	bool parachute = false;
 	// Use this for initialization
 	void Start () {
-	
+		this.transform.FindChild("Capsule").gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -37,15 +37,16 @@ public class Creep_Body_Script : MonoBehaviour {
 	}
 
 	void BalloonHitt()
-	{	Debug.Log("balloon hit :");
+	{	
 		if(this.parachute == false)
 		{
 			Debug.Log("parachute hit :"+this.parachute);
-
+			LaunchParachute();
 			this.parachute = true;
 		}
 		else if(this.parachute == true)
 		{
+			this.transform.FindChild("Capsule").gameObject.SetActive(false);
 			Debug.Log("creep dead");
 		}
 	}
@@ -67,5 +68,12 @@ public class Creep_Body_Script : MonoBehaviour {
 			this.parachute = false;
 		}
 		
+	}
+
+	void LaunchParachute()
+	{
+		this.transform.FindChild("Sphere").gameObject.SetActive(false);
+		this.transform.FindChild("Capsule").gameObject.SetActive(true);
+		//this.gameObject.rigidbody2D.gravityScale = 0.33f;
 	}
 }

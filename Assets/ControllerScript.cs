@@ -12,6 +12,7 @@ public class ControllerScript : MonoBehaviour {
 	public int android_strafeval;
 	public Rect windowrect;
 	bool grounded;
+	public int recoilvectorX;
 	// Use this for initialization
 	void Start () {
 		bottomLeft = camera.ScreenToWorldPoint(Vector2.zero);
@@ -27,6 +28,8 @@ public class ControllerScript : MonoBehaviour {
 		android_jumpval = 40;
 		android_strafeval = 10;
 
+		//set recoil vector for x
+		//recoilvectorX = 100;
 	}
 
 	void Update()
@@ -102,7 +105,21 @@ public class ControllerScript : MonoBehaviour {
 		if(other.collider.tag == "creepballoon")
 		{
 			Debug.Log("creep balloon reached");
-			other.gameObject.SendMessage("BalloonHitt", SendMessageOptions.DontRequireReceiver);
+			other.gameObject.transform.parent.SendMessage("BalloonHitt", SendMessageOptions.DontRequireReceiver);
+			Debug.Log (other.contacts[0].point);
+			Debug.Log (other.gameObject.transform.position);
+
+			if(other.contacts[0].point.x >= other.gameObject.transform.position.x)
+			{
+				Debug.Log("right");
+				this.transform.rigidbody2D.AddForceAtPosition(new Vector2(recoilvectorX,0),other.contacts[0].point);
+			}
+			else if(other.contacts[0].point.x <= other.gameObject.transform.position.x)
+			{
+				Debug.Log ("left");
+				this.transform.rigidbody2D.AddForceAtPosition(new Vector2(-recoilvectorX,0),other.contacts[0].point);
+			}
+
 		}
 
 		if(other.collider.tag == "creepbody")
