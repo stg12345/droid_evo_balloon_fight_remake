@@ -11,7 +11,7 @@ public class ControllerScript : MonoBehaviour {
 	public int android_jumpval;
 	public int android_strafeval;
 	public Rect windowrect;
-	public GameObject gameoverpopup;
+	bool grounded;
 	// Use this for initialization
 	void Start () {
 		bottomLeft = camera.ScreenToWorldPoint(Vector2.zero);
@@ -45,7 +45,7 @@ public class ControllerScript : MonoBehaviour {
 #if UNITY_EDITOR_WIN
 		if(Input.GetButton("Jump"))
 		{
-			Debug.Log(transform.position.y);
+			//Debug.Log(transform.position.y);
 			//if(transform.position.y < camera.pixelHeight)
 		{	
 			this.rigidbody2D.AddForce(new Vector2(0,1) * 5);
@@ -90,11 +90,39 @@ public class ControllerScript : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D other)
+	void OnCollisionEnter2D(Collision2D other)
 	{
-		if(other.tag == "water")
+		Debug.Log(other.collider.tag);
+		if(other.collider.tag == "water")
 		{
 			Application.LoadLevel("GameOverMenuScene");
+			Destroy(this);
 		}
+
+		if(other.collider.tag == "creepballoon")
+		{
+			Debug.Log("creep balloon reached");
+			other.gameObject.SendMessage("BalloonHitt", SendMessageOptions.DontRequireReceiver);
+		}
+
+		if(other.collider.tag == "creepbody")
+		{
+			Debug.Log("creep body reached");
+			other.gameObject.SendMessage("BodyHit",  SendMessageOptions.DontRequireReceiver);
+		}
+		if(other.collider.tag == "obstacle" || other.collider.tag == "ground")
+		{
+			Debug.Log("player grounded");
+			this.grounded = true;
+		}
+	}
+	void OnCollisionExit2D(Collision2D other)
+	{
+		if(other.collider.tag == "obstacle" || other.collider.tag == "ground")
+		{
+			Debug.Log("player take off");
+			this.grounded = false;
+		}
+
 	}
 }
